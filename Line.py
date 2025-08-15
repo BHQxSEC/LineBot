@@ -56,7 +56,35 @@ with open("menu_image.png", 'rb') as f:
 
 line_bot_api.set_default_rich_menu(rich_menu_id)
 
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+    user_text = event.message.text.strip().lower()
 
+    if user_text == "เมนู":
+        message = TextSendMessage(
+            text="กรุณาเลือกเมนู:",
+            quick_reply=QuickReply(items=[
+                QuickReplyButton(action=MessageAction(label="1", text="Flag คือข้อมูลที่ใช้ยืนยันใน CTF")),
+                QuickReplyButton(action=MessageAction(label="2", text="อืม… ขอคิดก่อนนะ 🤔")),
+                QuickReplyButton(action=MessageAction(label="3", text="ก็ได้… แต่เป็นความลับนะ ████████████████████████"))
+            ])
+        )
+        line_bot_api.reply_message(event.reply_token, message)
+
+    elif user_text == "flag คืออะไร":
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Flag คือข้อมูลที่ใช้ยืนยันใน CTF"))
+
+    elif user_text == "บอกหน่อยเถอะ":
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="อืม… ขอคิดก่อนนะ 🤔 ไม่บอกหรอก"))
+
+    elif user_text == "ไหว้หละบอกเถอะ":
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="ก็ได้… แต่เป็นความลับนะ ████████████████████████"))
+
+    elif user_text in ["G1mm3_th3_Fl@g"]:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="นี่คือ Flag ของคุณ: Vergil"))
+
+    else:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="🤔"))
 
 
 
